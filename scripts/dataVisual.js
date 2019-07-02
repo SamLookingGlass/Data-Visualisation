@@ -11,14 +11,18 @@ axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym
   })
   .then(function (response) {
       let readings = response.data.Data
+      let arrayinfocoin = [];
       for(x in readings) {
       // console.log(readings[x])
        let name = readings[x].CoinInfo.FullName;
        let abbrv = readings[x].CoinInfo.Name;
+       let image = readings[x].CoinInfo.ImageUrl;
        let price = readings[x].DISPLAY.USD.PRICE;
-       let infocoin = {name, abbrv, price};
-       console.log(infocoin);
+       let marketcap = readings[x].DISPLAY.USD.MKTCAP;
+       let infocoin = {name, abbrv, price, marketcap, image};
+       arrayinfocoin.push(infocoin);
       }
+      console.log(arrayinfocoin);
       console.log(readings);
   })
   .catch(function (error) {
@@ -28,6 +32,7 @@ axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym
     // always executed
     
   });  
+  
 
   
   
