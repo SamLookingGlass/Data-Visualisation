@@ -1,8 +1,16 @@
 // Sanity Check
 // alert("Hello! I am an alert box!!");
 
+/*Website JS*/
+$(function() {
+  // Sidebar toggle behavior
+  $('#sidebarCollapse').on('click', function() {
+    $('#sidebar, #content').toggleClass('active');
+  });
+});
+
 // Data Gathering from CryptoCompare
-let crypto = null
+
 /*global axios*/
 axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD', {
     params: {
@@ -17,13 +25,15 @@ axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym
        let name = readings[x].CoinInfo.FullName;
        let abbrv = readings[x].CoinInfo.Name;
        let image = readings[x].CoinInfo.ImageUrl;
-       let price = readings[x].DISPLAY.USD.PRICE;
+       let stringprice = readings[x].DISPLAY.USD.PRICE;
+       let price = stringprice.replace('$','').replace(',','');
        let marketcap = readings[x].DISPLAY.USD.MKTCAP;
        let infocoin = {name, abbrv, price, marketcap, image};
        arrayinfocoin.push(infocoin);
       }
       console.log(arrayinfocoin);
-      console.log(readings);
+    //   console.log(readings);
+       printdata(arrayinfocoin);
   })
   .catch(function (error) {
     console.log(error);
