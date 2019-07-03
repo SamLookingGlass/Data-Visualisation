@@ -21,7 +21,7 @@ axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym
       let readings = response.data.Data
       let arrayinfocoin = [];
       for(x in readings) {
-      // console.log(readings[x])
+       console.log(readings[x])
        let name = readings[x].CoinInfo.FullName;
        let abbrv = readings[x].CoinInfo.Name;
        let image = readings[x].CoinInfo.ImageUrl;

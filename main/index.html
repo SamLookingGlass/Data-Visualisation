@@ -121,22 +121,27 @@
 
   <!-- Side Content -->
   <!--<div class="separator"></div>-->
-  <div class="row text-white containter-fluid">
-    <div class="col-lg-3">
-      <div class="bg-white p-5 rounded my-5 shadow-sm">
-        <ul class="lead font-italicz mb-0 text-muted">
-            <li>Digital Asset 1</li>
-            <li>Digital Asset 2</li>
-            <li>Digital Asset 3</li>
-            <li>Digital Asset 4</li>
-            <li>Digital Asset 5</li>
-            <li>Digital Asset 6</li>
-            <li>Digital Asset 7</li>
-            <li>Digital Asset 8</li>
-            <li>Digital Asset 9</li>
-            <li>Digital Asset 10</li>
-        </ul>
-      </div>
+  <div class="row containter-fluid">
+    <div class="col-lg-4 bg-white p-5 rounded my-5 shadow-sm">
+      <h2>Popular Coins</h2>
+        <table class="table table-hover">
+          <tbody class="popcoins lead mb-0 text-muted">
+            <!--<tr class="table-primary">-->
+            <!--  <th scope="row">1</th>-->
+            <!--  <td> <img src="../images/logo.png" alt="..." width="50"></img>-->
+            <!--    <h6>Digital Asset 1</h6>-->
+            <!--    </td>-->
+            <!--  <td>Price: </td>-->
+            <!--</tr>-->
+            <!--<tr class="table">-->
+            <!--  <th scope="row">2</th>-->
+            <!--  <td> <img src="../images/logo.png" alt="..." width="50"></img>-->
+            <!--    <h6>Digital Asset 2</h6>-->
+            <!--    </td>-->
+            <!--  <td>Price: </td>-->
+            <!--</tr>-->
+          </tbody>
+        </table>  
     </div>
     
     <div class="col-lg-8">
@@ -154,6 +159,19 @@
         
                     var name_dim = ndx.dimension(dc.pluck('name'));
                     var price = name_dim.group().reduceSum(dc.pluck('price'));
+                    
+                    for (let c of arrayinfocoin)
+                    {
+                      $(".popcoins").append(`
+                          
+                            <tr class="table">
+                              <td> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
+                                <h5>${c.name}</h5>
+                              </td>
+                              <td>Price: $${c.price}</td>
+                            </tr>
+                      `)
+                    };
                     
                      dc.barChart('#dataset')
                     .width(1000)
