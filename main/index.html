@@ -63,26 +63,14 @@
             </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+      <a href="about.html" class="nav-link text-dark font-italic">
                 <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                 About
             </a>
     </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
-                Services
-            </a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
-                Gallery
-            </a>
-    </li>
   </ul>
 
-  <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
+  <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Analysis</p>
 
   <ul class="nav flex-column bg-white mb-0">
     <li class="nav-item">
@@ -122,24 +110,10 @@
   <!-- Side Content -->
   <!--<div class="separator"></div>-->
   <div class="row containter-fluid">
-    <div class="col-lg-4 bg-white p-5 rounded my-5 shadow-sm">
-      <h2>Popular Coins</h2>
+    <div id="toplist" class="col-lg-4 bg-white p-5 rounded my-5 shadow-sm">
+      <h2>Toplist by 24H Volume</h2>
         <table class="table table-hover">
           <tbody class="popcoins lead mb-0 text-muted">
-            <!--<tr class="table-primary">-->
-            <!--  <th scope="row">1</th>-->
-            <!--  <td> <img src="../images/logo.png" alt="..." width="50"></img>-->
-            <!--    <h6>Digital Asset 1</h6>-->
-            <!--    </td>-->
-            <!--  <td>Price: </td>-->
-            <!--</tr>-->
-            <!--<tr class="table">-->
-            <!--  <th scope="row">2</th>-->
-            <!--  <td> <img src="../images/logo.png" alt="..." width="50"></img>-->
-            <!--    <h6>Digital Asset 2</h6>-->
-            <!--    </td>-->
-            <!--  <td>Price: </td>-->
-            <!--</tr>-->
           </tbody>
         </table>  
     </div>
@@ -147,16 +121,23 @@
     <div class="col-lg-8">
       <!--<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure-->
         <!--dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>-->
+            <h3>Mouse Events</h3>
+            <button id ="btn1">Hide Toplist</button>
+            <button id ="btn2">Button 2</button>
+          
             <div style="font-weight:bold" id ="dataset">
             <h1>Coin Information</h1>
             </div>
             <div style="font-weight:bold" id ="dataset1">
             <h1>Coin Information</h1>
             </div>
+            <div style="font-weight:bold" id ="dataset2">
+            <h1>Coin Information</h1>
+            </div>
             <script>
+            
                     function printdata(arrayinfocoin) {
                     var ndx = crossfilter(arrayinfocoin);
-        
                     var name_dim = ndx.dimension(dc.pluck('name'));
                     var price = name_dim.group().reduceSum(dc.pluck('price'));
                     
@@ -217,6 +198,44 @@
                         
                         dc.renderAll();
                     }
+                    
+                    
+                    // second api
+                    function printdata1(arrayinfoBitcoin) {
+                    var ndx = crossfilter(arrayinfoBitcoin);
+                    var time_dim = ndx.dimension(dc.pluck('time'));
+                    var open = time_dim.group().reduceSum(dc.pluck('open'));
+                  
+            
+                    dc.lineChart("#dataset2")
+                        .width(1000)
+                        .height(300)
+                        .margins({top: 10, right: 50, bottom: 30, left: 50})
+                        .dimension(time_dim)
+                        .group(open)
+                        .transitionDuration(500)
+                        .x(d3.scale.ordinal())
+                    .xUnits(dc.units.ordinal)
+                    .xAxisLabel("Hourly Prices")
+                    .yAxis().ticks(5);
+                        
+                        
+                        dc.renderAll();
+                    }
+            </script>
+            <script>
+              $(document).ready(function(){
+                
+                $('#btn1').on('click',function() {
+                 $('#toplist').toggle();
+                
+                })
+                
+                
+              });
+              
+              
+              
             </script>
   </div>
 
