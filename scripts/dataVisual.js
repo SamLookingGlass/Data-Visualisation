@@ -10,6 +10,34 @@ $(function() {
   });
 });
 
+// Unix Time Converter 
+function convertTimestamp(timestamp) {
+  var d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
+		yyyy = d.getFullYear(),
+		mm = ('0' + (d.getMonth() + 1)).slice(-2),	// Months are zero based. Add leading 0.
+		dd = ('0' + d.getDate()).slice(-2),			// Add leading 0.
+		hh = d.getHours(),
+		h = hh,
+		min = ('0' + d.getMinutes()).slice(-2),		// Add leading 0.
+		ampm = 'AM',
+		time;
+			
+	if (hh > 12) {
+		h = hh - 12;
+		ampm = 'PM';
+	} else if (hh === 12) {
+		h = 12;
+		ampm = 'PM';
+	} else if (hh == 0) {
+		h = 12;
+	}
+	
+	// ie: 2013-02-18, 8:35 AM	
+	time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm;
+		
+	return time;
+}
+
 // Data Gathering from CryptoCompare
 
 /*global axios*/
@@ -57,7 +85,8 @@ axios.get('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&li
 
     for (x in readings1) {
       //   console.log(readings1[x])
-      let time = readings1[x].time;
+      let timeno = readings1[x].time;
+      let time = convertTimestamp(timeno)
       let close = readings1[x].close;
       let high = readings1[x].high;
       let low = readings1[x].low;
@@ -103,7 +132,8 @@ function userinput(fsym) {
 
       for (x in readings2) {
         //   console.log(readings2[x])
-        let time = readings2[x].time;
+        let timeno = readings2[x].time;
+        let time = convertTimestamp(timeno);
         let close = readings2[x].close;
         let high = readings2[x].high;
         let low = readings2[x].low;
@@ -147,3 +177,5 @@ $(function() {
   })
   
 })
+
+
