@@ -124,15 +124,21 @@
             <h3>Mouse Events</h3>
             <button id ="btn1">Hide Toplist</button>
             <button id ="btn2">Button 2</button>
+            <hr>
+            
+              <div class="row"><label>Coin Selector</label></div>
+              <div class="row"><input type="text" id="coin" name="coin"/></div>
+              <div class="row"><button id="submit" name="submit" tyoe="button" onClick="getData()">Click</button></div>
+            
           
             <div style="font-weight:bold" id ="dataset">
-            <h1>Coin Information</h1>
+            <h1>Price of Coins</h1>
             </div>
             <div style="font-weight:bold" id ="dataset1">
             <h1>Coin Information</h1>
             </div>
             <div style="font-weight:bold" id ="dataset2">
-            <h1>Coin Information</h1>
+            <h1>Hourly Price of Bitcoin</h1>
             </div>
             <script>
             
@@ -146,7 +152,7 @@
                       $(".popcoins").append(`
                           
                             <tr class="table">
-                              <td> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
+                              <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
                                 <h5>${c.name}</h5>
                               </td>
                               <td>Price: $${c.price}</td>
@@ -224,14 +230,29 @@
                     }
             </script>
             <script>
-              $(document).ready(function(){
+            //Get Value from Input
+            function getData() {  
+              alert($('#coin').val())
+              
+              }
+               
+               
+              $(function(){
                 
                 $('#btn1').on('click',function() {
                  $('#toplist').toggle();
                 
                 })
                 
+                $('#btn2').on('click',function() {
                 
+                })
+                
+                $('td').on('click', function(){
+                  $('#dataset').toggle();
+                  
+                })
+               
               });
               
               
