@@ -78,5 +78,48 @@ axios.get('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&li
   });  
   
 
-  
-  
+  //Any Coin (Testing)
+function getData() {  
+              let fsym = ($('#coin').val())
+              userinput(fsym)     
+              }
+              
+var apistring = "https://min-api.cryptocompare.com/data/histohour";
+
+function userinput(fsym) {  
+  axios.get(apistring, {
+      params: {
+      api_key:"2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
+      fsym: fsym,
+      tsym: "USD",
+      limit: "20",
+      }
+    })
+    .then(function (response) {
+      console.log(response)
+        let readings2 = response.data.Data
+        let arrayinfoETH = [];
+        
+        for(x in readings2) {
+      //   console.log(readings2[x])
+        let time = readings2[x].time;
+        let close = readings2[x].close;
+        let high = readings2[x].high;
+        let low = readings2[x].low;
+        let open = readings2[x].open;
+        let volumefrom = readings2[x].volumefrom;
+        let volumeto = readings2[x].volumeto;
+        let infoETH = {time, close, high, low, open, volumefrom, volumeto};
+        arrayinfoETH.push(infoETH);
+        }
+        // console.log(arrayinfoETH);
+        printdata2(arrayinfoETH);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+      
+    });  
+}

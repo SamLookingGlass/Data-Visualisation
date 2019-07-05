@@ -130,16 +130,24 @@
               <div class="row"><input type="text" id="coin" name="coin"/></div>
               <div class="row"><button id="submit" name="submit" tyoe="button" onClick="getData()">Click</button></div>
             
-          
+            <!--Always Showing-->
             <div style="font-weight:bold" id ="dataset">
             <h1>Price of Coins</h1>
             </div>
-            <div style="font-weight:bold" id ="dataset1">
-            <h1>Coin Information</h1>
+            
+            <!--Toggle Area-->
+            <div id="mainsec" style="background-color:white">
+              <div style="font-weight:bold" id ="dataset1">
+              <h1>Coin Information</h1>
+              </div>
+              <div style="font-weight:bold" id ="dataset2">
+              <h1>Hourly Price of Bitcoin</h1>
+              </div>
+              <div class="coinselector" style="font-weight:bold" id ="dataset3">
+              <h1>Hourly Price of Selected Coin</h1>
+              </div>
             </div>
-            <div style="font-weight:bold" id ="dataset2">
-            <h1>Hourly Price of Bitcoin</h1>
-            </div>
+            
             <script>
             
                     function printdata(arrayinfocoin) {
@@ -204,6 +212,7 @@
                         
                         dc.renderAll();
                     }
+                    //end of API call
                     
                     
                     // second api
@@ -228,15 +237,33 @@
                         
                         dc.renderAll();
                     }
-            </script>
-            <script>
-            //Get Value from Input
-            function getData() {  
-              alert($('#coin').val())
-              
-              }
-               
-               
+                    //end of API call
+                    
+                    // ETH api
+                    function printdata2(arrayinfoETH) {
+                    var ndx = crossfilter(arrayinfoETH);
+                    var time_dim = ndx.dimension(dc.pluck('time'));
+                    var open = time_dim.group().reduceSum(dc.pluck('open'));
+                  
+            
+                    dc.lineChart("#dataset3")
+                        .width(1000)
+                        .height(300)
+                        .margins({top: 10, right: 50, bottom: 30, left: 50})
+                        .dimension(time_dim)
+                        .group(open)
+                        .transitionDuration(500)
+                        .x(d3.scale.ordinal())
+                    .xUnits(dc.units.ordinal)
+                    .xAxisLabel("Hourly Prices")
+                    .yAxis().ticks(5);
+                        
+                        
+                        dc.renderAll();    
+                    }
+                    //end of API call
+                  
+            
               $(function(){
                 
                 $('#btn1').on('click',function() {
@@ -249,15 +276,17 @@
                 })
                 
                 $('td').on('click', function(){
-                  $('#dataset').toggle();
-                  
+                  $('#mainsec').toggle();
+                })
+                
+                $(".class").click(function(){
+                  function(event.target.id)
                 })
                
               });
-              
-              
-              
+                    
             </script>
+            
   </div>
 
 </div>
