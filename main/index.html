@@ -1,163 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Visualisation</title>
-    
-    <!--Axios JS-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
-    <!--JQuery JS-->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
-   
-    <!--Load Jasmine Framework-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/jasmine.js"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/jasmine-html.js"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/boot.js"></script>-->
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/jasmine.css">-->
-   
-    <!-- Load Tests -->
-    <!--<script type="text/javascript" src="spec/apiSpec.js"></script>-->
-    
-    <!--FontAwesome CSS-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
-    <!--Bootstrap CSS-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" type="text/css" />
-    <!--Own Stylelist-->
-    <link href="../main/style.css" rel="stylesheet" type="text/css" />
 
-    <!--D3 Framework-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css" />
-    
-    <style>
-        div {
-            clear: left;
-        }
-    </style>
-    
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Data Visualisation</title>
+
+  <!--Axios JS-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+  <!--JQuery JS-->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.js" integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
+
+  <!--Load Jasmine Framework-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/jasmine.js"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/jasmine-html.js"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/boot.js"></script>-->
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.7.0/jasmine.css">-->
+
+  <!-- Load Tests -->
+  <!--<script type="text/javascript" src="spec/apiSpec.js"></script>-->
+
+  <!--FontAwesome CSS-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
+  <!--Bootstrap CSS-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" type="text/css" />
+  <!--Own Stylelist-->
+  <link href="../main/style.css" rel="stylesheet" type="text/css" />
+
+  <!--D3 Framework-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css" />
+
+  <style>
+    div {
+      clear: left;
+    }
+  </style>
+
 </head>
+
 <body>
-<!-- Vertical navbar -->
-<div class="vertical-nav bg-white" id="sidebar">
-  <div class="py-4 px-3 mb-4 bg-light">
-    <div class="media d-flex align-items-center"><img src="../images/logo.png" alt="..." width="100" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-      <div class="media-body">
-        <h4 class="m-0">Quinoa</h4>
-        <p class="font-weight-light text-muted mb-0">Digital Assets Dashboard</p>
+  <!-- Vertical navbar -->
+  <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+      <div class="media d-flex align-items-center"><img src="../images/logo.png" alt="..." width="100" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        <div class="media-body">
+          <h4 class="m-0">Quinoa</h4>
+          <p class="font-weight-light text-muted mb-0">Digital Assets Dashboard</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
 
-  <ul class="nav flex-column bg-white mb-0">
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic bg-light">
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic bg-light">
                 <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
                 Home
             </a>
-    </li>
-    <li class="nav-item">
-      <a href="about.html" class="nav-link text-dark font-italic">
+      </li>
+      <li class="nav-item">
+        <a href="about.html" class="nav-link text-dark font-italic">
                 <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                 About
             </a>
-    </li>
-  </ul>
+      </li>
+    </ul>
 
-  <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Analysis</p>
+    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Analysis</p>
 
-  <ul class="nav flex-column bg-white mb-0">
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic">
                 <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
                 Area charts
             </a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic">
                 <i class="fa fa-bar-chart mr-3 text-primary fa-fw"></i>
                 Bar charts
             </a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic">
                 <i class="fa fa-pie-chart mr-3 text-primary fa-fw"></i>
                 Pie charts
             </a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic">
                 <i class="fa fa-line-chart mr-3 text-primary fa-fw"></i>
                 Line charts
             </a>
-    </li>
-  </ul>
-</div>
-<!-- End vertical navbar -->
+      </li>
+    </ul>
+  </div>
+  <!-- End vertical navbar -->
 
 
-<!-- Page content holder -->
-<div class="page-content p-5" id="content">
-  <!-- Toggle button -->
-  <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
+  <!-- Page content holder -->
+  <div class="page-content p-5" id="content">
+    <!-- Toggle button -->
+    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
 
-  <!-- Side Content -->
-  <!--<div class="separator"></div>-->
-  <div class="row containter-fluid">
-    <div id="toplist" class="col-lg-4 bg-white p-5 rounded my-5 shadow-sm">
-      <h2>Toplist by 24H Volume</h2>
+    <!-- Side Content -->
+    <!--<div class="separator"></div>-->
+    <div class="row containter-fluid">
+      <div id="toplist" class="col-lg-4 bg-white p-5 rounded my-5 shadow-sm">
+        <h2>Toplist by 24H Volume</h2>
         <table class="table table-hover">
           <tbody class="popcoins lead mb-0 text-muted">
           </tbody>
-        </table>  
-    </div>
-    
-    <div class="col-lg-8">
-      <!--<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure-->
+        </table>
+      </div>
+
+      <div class="col-lg-8">
+        <!--<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure-->
         <!--dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>-->
-            <h3>Mouse Events</h3>
-            <button id ="btn1">Hide Toplist</button>
-            <button id ="btn2">Button 2</button>
-            <hr>
-            
-              <div class="row"><label>Coin Selector</label></div>
-              <div class="row"><input type="text" id="coin" name="coin"/></div>
-              <div class="row"><button id="submit" name="submit" tyoe="button" onClick="getData()">Click</button></div>
-            
-            <!--Always Showing-->
-            <div style="font-weight:bold" id ="dataset">
-            <h1>Price of Coins</h1>
-            </div>
-            
-            <!--Toggle Area-->
-            <div id="mainsec" style="background-color:white">
-              <div style="font-weight:bold" id ="dataset1">
-              <h1>Coin Information</h1>
-              </div>
-              <div style="font-weight:bold" id ="dataset2">
-              <h1>Hourly Price of Bitcoin</h1>
-              </div>
-              <div class="coinselector" style="font-weight:bold" id ="dataset3">
-              <h1>Hourly Price of Selected Coin</h1>
-              </div>
-            </div>
-            
-            <script>
-            
-                    function printdata(arrayinfocoin) {
-                    var ndx = crossfilter(arrayinfocoin);
-                    var name_dim = ndx.dimension(dc.pluck('name'));
-                    var price = name_dim.group().reduceSum(dc.pluck('price'));
-                    
-                    for (let c of arrayinfocoin)
-                    {
-                      $(".popcoins").append(`
+        <h3>Mouse Events</h3>
+        <button id="btn1">Hide Toplist</button>
+        <button id="btn2">Button 2</button>
+        <hr>
+
+        <div class="row"><label>Coin Selector</label></div>
+        <div class="row"><input type="text" id="coin" name="coin" /></div>
+        <div class="row"><button id="submit" name="submit" tyoe="button" onClick="getData()">Click</button></div>
+
+        <!--Always Showing-->
+        <div style="font-weight:bold" id="dataset">
+          <h1>Price of Coins</h1>
+        </div>
+
+        <!--Toggle Area-->
+        <div id="mainsec" style="background-color:white">
+          <div style="font-weight:bold" id="dataset1">
+            <h1>Coin Information</h1>
+          </div>
+          <div style="font-weight:bold" id="dataset2">
+            <h1>Hourly Price of Bitcoin</h1>
+          </div>
+          <div class="coinselector" style="font-weight:bold" id="dataset3">
+            <h1>Hourly Price of Selected Coin</h1>
+          </div>
+        </div>
+
+        <script>
+          function printdata(arrayinfocoin) {
+            var ndx = crossfilter(arrayinfocoin);
+            var name_dim = ndx.dimension(dc.pluck('name'));
+            var price = name_dim.group().reduceSum(dc.pluck('price'));
+
+            for (let c of arrayinfocoin) {
+              $(".popcoins").append(`
                           
                             <tr class="table">
                               <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
@@ -166,134 +166,112 @@
                               <td>Price: $${c.price}</td>
                             </tr>
                       `)
-                    };
-                    
-                     dc.barChart('#dataset')
-                    .width(1000)
-                    .height(500)
-                    .margins({top: 10, right: 50, bottom: 30, left: 50})
-                    .dimension(name_dim)
-                    .group(price)
-                    .transitionDuration(500)
-                    .x(d3.scale.ordinal())
-                    .xUnits(dc.units.ordinal)
-                    .xAxisLabel("Price of Coins (USD)")
-                    .yAxis().ticks(5);
-                    
-                     dc.renderAll();
-                    
-                    // line graph
-                    // function makeGraphs(error, arrayinfocoin) {
-                    // var ndx = crossfilter(arrayinfocoin);
-            
-                    // var parseDate = d3.time.format("%d/%m/%Y").parse;
-                    // arrayinfocoin.forEach(function(d){
-                    //     d.date = parseDate(d.date);
-                    // });
-            
-                    var name_dim = ndx.dimension(dc.pluck('name'));
-                    var price = name_dim.group().reduceSum(dc.pluck('price'));
-            
-                    // var minDate = name_dim.bottom(1)[0].date;
-                    // var maxDate = name_dim.top(1)[0].date;
-            
-                    dc.lineChart("#dataset1")
-                        .width(1000)
-                        .height(300)
-                        .margins({top: 10, right: 50, bottom: 30, left: 50})
-                        .dimension(name_dim)
-                        .group(price)
-                        .transitionDuration(500)
-                        .x(d3.scale.ordinal())
-                    .xUnits(dc.units.ordinal)
-                    .xAxisLabel("Price of Coins (USD)")
-                    .yAxis().ticks(5);
-                        
-                        
-                        dc.renderAll();
-                    }
-                    //end of API call
-                    
-                    
-                    // second api
-                    function printdata1(arrayinfoBitcoin) {
-                    var ndx = crossfilter(arrayinfoBitcoin);
-                    var time_dim = ndx.dimension(dc.pluck('time'));
-                    var open = time_dim.group().reduceSum(dc.pluck('open'));
-                  
-            
-                    dc.lineChart("#dataset2")
-                        .width(1000)
-                        .height(300)
-                        .margins({top: 10, right: 50, bottom: 30, left: 50})
-                        .dimension(time_dim)
-                        .group(open)
-                        .transitionDuration(500)
-                        .x(d3.scale.ordinal())
-                    .xUnits(dc.units.ordinal)
-                    .xAxisLabel("Hourly Prices")
-                    .yAxis().ticks(5);
-                        
-                        
-                        dc.renderAll();
-                    }
-                    //end of API call
-                    
-                    // ETH api
-                    function printdata2(arrayinfoETH) {
-                    var ndx = crossfilter(arrayinfoETH);
-                    var time_dim = ndx.dimension(dc.pluck('time'));
-                    var open = time_dim.group().reduceSum(dc.pluck('open'));
-                  
-            
-                    dc.lineChart("#dataset3")
-                        .width(1000)
-                        .height(300)
-                        .margins({top: 10, right: 50, bottom: 30, left: 50})
-                        .dimension(time_dim)
-                        .group(open)
-                        .transitionDuration(500)
-                        .x(d3.scale.ordinal())
-                    .xUnits(dc.units.ordinal)
-                    .xAxisLabel("Hourly Prices")
-                    .yAxis().ticks(5);
-                        
-                        
-                        dc.renderAll();    
-                    }
-                    //end of API call
-                  
-            
-              $(function(){
-                
-                $('#btn1').on('click',function() {
-                 $('#toplist').toggle();
-                
-                })
-                
-                $('#btn2').on('click',function() {
-                
-                })
-                
-                $('td').on('click', function(){
-                  $('#mainsec').toggle();
-                })
-                
-                $(".class").click(function(){
-                  function(event.target.id)
-                })
-               
-              });
-                    
-            </script>
-            
-  </div>
+            };
 
-</div>
+            dc.barChart('#dataset')
+              .width(1000)
+              .height(500)
+              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+              .dimension(name_dim)
+              .group(price)
+              .transitionDuration(500)
+              .x(d3.scale.ordinal())
+              .xUnits(dc.units.ordinal)
+              .xAxisLabel("Price of Coins (USD)")
+              .yAxis().ticks(5);
+
+            dc.renderAll();
+
+            // line graph
+            // function makeGraphs(error, arrayinfocoin) {
+            // var ndx = crossfilter(arrayinfocoin);
+
+            // var parseDate = d3.time.format("%d/%m/%Y").parse;
+            // arrayinfocoin.forEach(function(d){
+            //     d.date = parseDate(d.date);
+            // });
+
+            var name_dim = ndx.dimension(dc.pluck('name'));
+            var price = name_dim.group().reduceSum(dc.pluck('price'));
+
+            // var minDate = name_dim.bottom(1)[0].date;
+            // var maxDate = name_dim.top(1)[0].date;
+
+            dc.lineChart("#dataset1")
+              .width(1000)
+              .height(300)
+              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+              .dimension(name_dim)
+              .group(price)
+              .transitionDuration(500)
+              .x(d3.scale.ordinal())
+              .xUnits(dc.units.ordinal)
+              .xAxisLabel("Price of Coins (USD)")
+              .yAxis().ticks(5);
 
 
-   
-   
+            dc.renderAll();
+          }
+          //end of API call
+
+
+          // second api
+          function printdata1(arrayinfoBitcoin) {
+            var ndx = crossfilter(arrayinfoBitcoin);
+            var time_dim = ndx.dimension(dc.pluck('time'));
+            var open = time_dim.group().reduceSum(dc.pluck('open'));
+
+
+            dc.lineChart("#dataset2")
+              .width(1000)
+              .height(300)
+              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+              .dimension(time_dim)
+              .group(open)
+              .transitionDuration(500)
+              .x(d3.scale.ordinal())
+              .xUnits(dc.units.ordinal)
+              .xAxisLabel("Hourly Prices")
+              .yAxis().ticks(5);
+
+
+            dc.renderAll();
+          }
+          //end of API call
+
+          // ETH api
+          function printdata2(arrayinfoETH) {
+            var ndx = crossfilter(arrayinfoETH);
+            var time_dim = ndx.dimension(dc.pluck('time'));
+            var open = time_dim.group().reduceSum(dc.pluck('open'));
+
+
+            dc.lineChart("#dataset3")
+              .width(1000)
+              .height(300)
+              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+              .dimension(time_dim)
+              .group(open)
+              .transitionDuration(500)
+              .x(d3.scale.ordinal())
+              .xUnits(dc.units.ordinal)
+              .xAxisLabel("Hourly Prices")
+              .yAxis().ticks(5);
+
+
+            dc.renderAll();
+          }
+          //end of API call
+
+        </script>
+
+      </div>
+
+    </div>
+
+
+
+
     <!-- Own JavaScript -->
     <script src="../scripts/dataVisual.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -301,4 +279,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
 </html>
