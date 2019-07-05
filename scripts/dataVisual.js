@@ -137,10 +137,13 @@ $(function() {
   })
   
   $('td').on('click', function() {
-    alert($(this).attr('id'));
+    alert($(this).attr('id'))
+    let graphname = ($(this)[0].innerText);
     let fsym = $(this).attr('id');
+    
+    $('#selectedcoin').html(`Hourly Price of ${graphname}`)
+    
     userinput(fsym)
   })
   
-
 })
