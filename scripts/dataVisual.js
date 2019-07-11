@@ -41,15 +41,16 @@ function convertTimestamp(timestamp) {
 // Data Gathering from CryptoCompare
 
 /*global axios*/
-
+function updateCurrency(tsym) {
 axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
     params: {
       api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
       limit:"20",
-      tsym:"USD",
+      tsym:tsym,
     }
   })
   .then(function(response) {
+    console.log(tsym);
     let readings = response.data.Data
     let arrayinfocoin = [];
     for (x in readings) {
@@ -57,10 +58,22 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
       let name = readings[x].CoinInfo.FullName;
       let abbrv = readings[x].CoinInfo.Name;
       let image = readings[x].CoinInfo.ImageUrl;
-      let stringprice = readings[x].DISPLAY.USD.PRICE;
-      let price = stringprice.replace('$', '').replace(',', '');
-      let marketcap = readings[x].DISPLAY.USD.MKTCAP;
-      let infocoin = { name, abbrv, price, marketcap, image };
+      let stringprice = readings[x].DISPLAY[tsym].PRICE;
+      // let price = stringprice.replace('$', '').replace(',', '');
+      let marketcap = readings[x].DISPLAY[tsym].MKTCAP;
+    
+      if (stringprice.includes('$')) {
+       price = stringprice.replace('$', '').replace(',', '')
+      } 
+      else if (stringprice.includes('£')) {
+       price =stringprice.replace('£', '').replace(',', '')
+      }
+      else {
+       price =stringprice.replace('SGD', '').replace(',', '')
+      }
+      
+      let infocoin = { name, abbrv, price, marketcap, image, stringprice };
+      
       arrayinfocoin.push(infocoin);
     }
     console.log(arrayinfocoin);
@@ -74,7 +87,8 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
     // always executed
 
   });
-  
+}
+
   function printdata(arrayinfocoin) {
             var ndx = crossfilter(arrayinfocoin);
             var name_dim = ndx.dimension(dc.pluck('name'));
@@ -87,7 +101,7 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
                               <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
                                 <h5>${c.name}</h5>
                               </td>
-                              <td><strong>Price: $${c.price}</strong></td>
+                              <td><strong>Price: ${c.stringprice}</strong></td>
                             </tr>
                       `)
             };
@@ -218,6 +232,7 @@ function userinput(fsym) {
     });
 }
 
+// Toplist function
 $(function() {
 
   $('#btn1').on('click', function() {
@@ -239,6 +254,10 @@ $(function() {
     userinput(fsym)
   })
   
+  $('.currency').click(function() {
+    alert($(this).attr('id'))
+    let tsym = $(this).attr('id');
+    updateCurrency(tsym)
+  })
+  
 })
-
-
