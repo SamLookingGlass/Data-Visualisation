@@ -33,7 +33,7 @@ function convertTimestamp(timestamp) {
 	}
 	
 	// ie: 2013-02-18, 8:35 AM	
-	time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm;
+	time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm
 		
 	return time;
 }
@@ -41,9 +41,12 @@ function convertTimestamp(timestamp) {
 // Data Gathering from CryptoCompare
 
 /*global axios*/
-axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD', {
+
+axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
     params: {
-      api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73"
+      api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
+      limit:"20",
+      tsym:"USD",
     }
   })
   .then(function(response) {
@@ -71,6 +74,68 @@ axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym
     // always executed
 
   });
+  
+  function printdata(arrayinfocoin) {
+            var ndx = crossfilter(arrayinfocoin);
+            var name_dim = ndx.dimension(dc.pluck('name'));
+            var price = name_dim.group().reduceSum(dc.pluck('price'));
+
+            for (let c of arrayinfocoin) {
+              $(".popcoins").append(`
+                          
+                            <tr class="table">
+                              <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
+                                <h5>${c.name}</h5>
+                              </td>
+                              <td><strong>Price: $${c.price}</strong></td>
+                            </tr>
+                      `)
+            };
+
+            dc.barChart('#dataset')
+              .width(1000)
+              .height(500)
+              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+              .dimension(name_dim)
+              .group(price)
+              .transitionDuration(500)
+              .x(d3.scale.ordinal())
+              .xUnits(dc.units.ordinal)
+              .xAxisLabel("Price of Coins (USD)")
+              .yAxis().ticks(5);
+
+            dc.renderAll();
+
+            // line graph
+            // function makeGraphs(error, arrayinfocoin) {
+            // var ndx = crossfilter(arrayinfocoin);
+
+            // var parseDate = d3.time.format("%d/%m/%Y").parse;
+            // arrayinfocoin.forEach(function(d){
+            //     d.date = parseDate(d.date);
+            // });
+
+            var name_dim = ndx.dimension(dc.pluck('name'));
+            var price = name_dim.group().reduceSum(dc.pluck('price'));
+
+            // var minDate = name_dim.bottom(1)[0].date;
+            // var maxDate = name_dim.top(1)[0].date;
+
+            dc.lineChart("#dataset1")
+              .width(1000)
+              .height(300)
+              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+              .dimension(name_dim)
+              .group(price)
+              .transitionDuration(500)
+              .x(d3.scale.ordinal())
+              .xUnits(dc.units.ordinal)
+              .xAxisLabel("Price of Coins (USD)")
+              .yAxis().ticks(5);
+
+
+            dc.renderAll();
+          }
 
 // Bitcoin Data  
 /*global axios*/
@@ -85,8 +150,7 @@ axios.get('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&li
 
     for (x in readings1) {
       //   console.log(readings1[x])
-      let timeno = readings1[x].time;
-      let time = convertTimestamp(timeno)
+      let time = readings1[x].time;
       let close = readings1[x].close;
       let high = readings1[x].high;
       let low = readings1[x].low;
@@ -132,8 +196,7 @@ function userinput(fsym) {
 
       for (x in readings2) {
         //   console.log(readings2[x])
-        let timeno = readings2[x].time;
-        let time = convertTimestamp(timeno);
+        let time = readings2[x].time;
         let close = readings2[x].close;
         let high = readings2[x].high;
         let low = readings2[x].low;

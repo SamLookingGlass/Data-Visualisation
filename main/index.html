@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Data Visualisation</title>
+  <title>Digital Asset Dashboard</title>
 
   <!--Axios JS-->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
@@ -71,35 +71,6 @@
             </a>
       </li>
     </ul>
-
-    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Analysis</p>
-
-    <ul class="nav flex-column bg-white mb-0">
-      <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
-                Area charts
-            </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-bar-chart mr-3 text-primary fa-fw"></i>
-                Bar charts
-            </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-pie-chart mr-3 text-primary fa-fw"></i>
-                Pie charts
-            </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-line-chart mr-3 text-primary fa-fw"></i>
-                Line charts
-            </a>
-      </li>
-    </ul>
   </div>
   <!-- End vertical navbar -->
 
@@ -133,6 +104,9 @@
     <!--<div class="separator"></div>-->
     <div class="row containter-fluid">
       <div id="toplist" class="col-lg-4 bg-white p-5 rounded my-5 shadow-sm">
+        <button class="btn btn-primary px-4 mb-4">GBP</button>
+        <button class="btn btn-primary px-4 mb-4">USD</button>
+        <button class="btn btn-primary px-4 mb-4">SGD</button>
         <h2>Toplist by 24H Volume</h2>
         <table class="table table-hover">
           <tbody class="popcoins lead mb-0 text-muted">
@@ -158,7 +132,7 @@
         </div>
 
         <!--Toggle Area-->
-        <div id="mainsec" style="background-color:white">
+        <div id="mainsec">
           <div style="font-weight:bold" id="dataset1">
             <h1>Coin Information</h1>
           </div>
@@ -171,68 +145,7 @@
         </div>
 <!--Scripts-->
         <script>
-          function printdata(arrayinfocoin) {
-            var ndx = crossfilter(arrayinfocoin);
-            var name_dim = ndx.dimension(dc.pluck('name'));
-            var price = name_dim.group().reduceSum(dc.pluck('price'));
-
-            for (let c of arrayinfocoin) {
-              $(".popcoins").append(`
-                          
-                            <tr class="table">
-                              <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
-                                <h5>${c.name}</h5>
-                              </td>
-                              <td>Price: $${c.price}</td>
-                            </tr>
-                      `)
-            };
-
-            dc.barChart('#dataset')
-              .width(1000)
-              .height(500)
-              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
-              .dimension(name_dim)
-              .group(price)
-              .transitionDuration(500)
-              .x(d3.scale.ordinal())
-              .xUnits(dc.units.ordinal)
-              .xAxisLabel("Price of Coins (USD)")
-              .yAxis().ticks(5);
-
-            dc.renderAll();
-
-            // line graph
-            // function makeGraphs(error, arrayinfocoin) {
-            // var ndx = crossfilter(arrayinfocoin);
-
-            // var parseDate = d3.time.format("%d/%m/%Y").parse;
-            // arrayinfocoin.forEach(function(d){
-            //     d.date = parseDate(d.date);
-            // });
-
-            var name_dim = ndx.dimension(dc.pluck('name'));
-            var price = name_dim.group().reduceSum(dc.pluck('price'));
-
-            // var minDate = name_dim.bottom(1)[0].date;
-            // var maxDate = name_dim.top(1)[0].date;
-
-            dc.lineChart("#dataset1")
-              .width(1000)
-              .height(300)
-              .margins({ top: 10, right: 50, bottom: 30, left: 50 })
-              .dimension(name_dim)
-              .group(price)
-              .transitionDuration(500)
-              .x(d3.scale.ordinal())
-              .xUnits(dc.units.ordinal)
-              .xAxisLabel("Price of Coins (USD)")
-              .yAxis().ticks(5);
-
-
-            dc.renderAll();
-          }
-          //end of API call
+          
 
 
           // second api
