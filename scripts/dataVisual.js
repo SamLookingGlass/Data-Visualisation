@@ -54,12 +54,12 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
     let readings = response.data.Data
     let arrayinfocoin = [];
     for (x in readings) {
-      //   console.log(readings[x])
+        console.log(readings[x])
       let name = readings[x].CoinInfo.FullName;
       let abbrv = readings[x].CoinInfo.Name;
       let image = readings[x].CoinInfo.ImageUrl;
       let stringprice = readings[x].DISPLAY[tsym].PRICE;
-      // let price = stringprice.replace('$', '').replace(',', '');
+      let pertchange = readings[x].DISPLAY[tsym].CHANGEPCT24HOUR;
       let marketcap = readings[x].DISPLAY[tsym].MKTCAP;
     
       if (stringprice.includes('$')) {
@@ -72,7 +72,7 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
        price =stringprice.replace('SGD', '').replace(',', '')
       }
       
-      let infocoin = { name, abbrv, price, marketcap, image, stringprice };
+      let infocoin = { name, abbrv, price, marketcap, image, stringprice, pertchange};
       
       arrayinfocoin.push(infocoin);
     }
@@ -93,18 +93,39 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
             var ndx = crossfilter(arrayinfocoin);
             var name_dim = ndx.dimension(dc.pluck('name'));
             var price = name_dim.group().reduceSum(dc.pluck('price'));
-
+            
+            console.log("before")
+            
             for (let c of arrayinfocoin) {
+              
+            if (c.pertchange > 0) { 
               $(".popcoins").append(`
-                          
                             <tr class="table">
                               <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
                                 <h5>${c.name}</h5>
                               </td>
-                              <td><strong>Price: ${c.stringprice}</strong></td>
+                              <td><strong>Price: <br/>${c.stringprice}</strong></td>
+                              <td><strong>24H Chg%: <br/><span class="poschange">${c.pertchange}</span></strong></td>
+                              <td><strong>Market Cap: <br/>${c.marketcap}</strong></td>
                             </tr>
                       `)
+            }
+            
+            else {
+              $(".popcoins").append(`
+                            <tr class="table">
+                              <td id="${c.abbrv}"> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
+                                <h5>${c.name}</h5>
+                              </td>
+                              <td><strong>Price: <br/>${c.stringprice}</strong></td>
+                              <td><strong>24H Chg%: <br/><span class="negchange">${c.pertchange}</span></strong></td>
+                              <td><strong>Market Cap: <br/>${c.marketcap}</strong></td>
+                            </tr>
+                      `)
+            }
+            
             };
+            
 
             dc.barChart('#dataset')
               .width(1000)
@@ -115,7 +136,7 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
               .transitionDuration(500)
               .x(d3.scale.ordinal())
               .xUnits(dc.units.ordinal)
-              .xAxisLabel("Price of Coins (USD)")
+              .xAxisLabel("Price of Coins")
               .yAxis().ticks(5);
 
             dc.renderAll();
@@ -144,7 +165,7 @@ axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
               .transitionDuration(500)
               .x(d3.scale.ordinal())
               .xUnits(dc.units.ordinal)
-              .xAxisLabel("Price of Coins (USD)")
+              .xAxisLabel("Price of Coins")
               .yAxis().ticks(5);
 
 
@@ -244,6 +265,16 @@ $(function() {
 
   })
   
+  
+  // Currency Conversion
+  $('.currency').click(function() {
+    alert($(this).attr('id'))
+    let tsym = $(this).attr('id');
+    updateCurrency(tsym)
+    $(".popcoins > tr").remove()
+  })
+  
+  //display graphs onclick
   $('td').on('click', function() {
     alert($(this).attr('id'))
     let graphname = ($(this)[0].innerText);
@@ -253,11 +284,4 @@ $(function() {
     
     userinput(fsym)
   })
-  
-  $('.currency').click(function() {
-    alert($(this).attr('id'))
-    let tsym = $(this).attr('id');
-    updateCurrency(tsym)
-  })
-  
 })
