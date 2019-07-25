@@ -95,9 +95,24 @@ body .col-lg-3.bg-white.p-5.rounded.my-5.shadow-sm {
 }
 
 .poschange {
- color: green 
+ color: white;
+ background-color: green;
+ padding:3pt;
+ border-radius: 5pt;
 }
 
 .negchange {
-  color: red;
+  color: white;
+  background-color: red;
+  padding:3pt;
+  border-radius: 5pt;
+ 
+}
+
+.nochange {
+  color: white;
+  background-color: grey;
+  padding:3pt;
+  border-radius: 5pt;
+ 
 }
