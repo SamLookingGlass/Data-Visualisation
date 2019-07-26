@@ -4,52 +4,47 @@ $(function() {
   $('#sidebarCollapse').on('click', function() {
     $('#sidebar, #content').toggleClass('active');
   });
-  
+
   // Toplist toggle
   $('#btn1').on('click', function() {
     $('#toplist').toggle();
 
   })
 
+  //display graphs onclick
+  // $('img#BTC').on('click', function() {
+  //   alert($(this).val())
+  //   let graphname = ($(this)[0].innerText);
+  //   let fsym = $(this).val();
+
+  //   $('#selectedcoin').html(`Hourly Price of ${graphname}`)
+
+  //   userinput(fsym)
+  // })
 
 });
 
 
 
+// let currency_array = [{value="GBP"},{value="USD"},{value="SGD"},{value="EUR"},
+// {value="DZD"}, {value="ARS"}, {value="AUD"}, {value="BRL"}, {value="BGN"},
+// {value="CAD"}, {value="CLP"}, {value="CNY"}, {value="COP"}, {value="DKK"},
+// {value="NLG"}, {value="EGP"}, {value="XAU"}, {value="HKD"}, {value="HUF"},
+// {value="ISK"}, {value="INR"}, {value="IDR"}, {value="ILS"}, {value="JMD"},
+// {value="JPY"}, {value="JOD"}, {value="KRW"}, {value="LBP"}, {value="MYR"},
+// {value="NLG"}, {value="NZD"}, {value="NGN"}, {value="NOK"}, {value="PKR"},
+// {value="PHP"}, {value="PLN"}, {value="RUR"}, {value="SAR"}, {value="ZAR"},
+// {value="SEK"}, {value="CHF"}, {value="TWD"}, {value="THB"}, {value="TTD"},
+// {value="XAG"}, {value="XAU"}]
 
-// Unix Time Converter 
-function convertTimestamp(timestamp) {
-  var d = new Date(timestamp * 1000), // Convert the passed timestamp to milliseconds
-    yyyy = d.getFullYear(),
-    mm = ('0' + (d.getMonth() + 1)).slice(-2), // Months are zero based. Add leading 0.
-    dd = ('0' + d.getDate()).slice(-2), // Add leading 0.
-    hh = d.getHours(),
-    h = hh,
-    min = ('0' + d.getMinutes()).slice(-2), // Add leading 0.
-    ampm = 'AM',
-    time;
+// function currency_conversion(currency_array, callback) {
 
-  if (hh > 12) {
-    h = hh - 12;
-    ampm = 'PM';
-  }
-  else if (hh === 12) {
-    h = 12;
-    ampm = 'PM';
-  }
-  else if (hh == 0) {
-    h = 12;
-  }
-
-  // ie: 2013-02-18, 8:35 AM	
-  time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm
-
-  return time;
-}
-
+// }
 // Data Gathering from CryptoCompare
+// readme needs to be detailed for writeup including testing and deployment, deployment plan 
 
 /*global axios*/
+/*TopList*/
 function updateCurrency(tsym) {
   axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
       params: {
@@ -76,6 +71,7 @@ function updateCurrency(tsym) {
         let high24 = readings[x].DISPLAY[tsym].HIGH24HOUR;
         let low24 = readings[x].DISPLAY[tsym].LOW24HOUR;
 
+
         if (stringprice.includes('$')) {
           price = stringprice.replace('$', '').replace(',', '')
         }
@@ -86,8 +82,8 @@ function updateCurrency(tsym) {
           price = stringprice.replace('SGD', '').replace(',', '')
         }
 
-        let infocoin = { name, abbrv, price, marketcap, image, stringprice, pertchange, supply, marketinfo, high24, low24};
-        
+        let infocoin = { name, abbrv, price, marketcap, image, stringprice, pertchange, supply, marketinfo, high24, low24 };
+
 
         arrayinfocoin.push(infocoin);
       }
@@ -142,7 +138,7 @@ function printdata(arrayinfocoin) {
                             </tr>
                       `)
     }
-    
+
     else {
       $(".popcoins").append(`
                             <tr class="table">
@@ -207,11 +203,15 @@ function printdata(arrayinfocoin) {
   dc.renderAll();
 }
 
-// Bitcoin Data  
+// Bitcoin/Ethereum/Litecoin Data  
 /*global axios*/
-axios.get('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=20', {
+function updateCoin(fsym) {
+axios.get('https://min-api.cryptocompare.com/data/histohour', {
     params: {
-      api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73"
+      api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
+      fsym: fsym,
+      tsym: "SGD",
+      limit: 20,
     }
   })
   .then(function(response) {
@@ -220,7 +220,8 @@ axios.get('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&li
 
     for (x in readings1) {
       //   console.log(readings1[x])
-      let time = readings1[x].time;
+      let time_raw = readings1[x].time;
+      let time = convertTimestamp(time_raw)
       let close = readings1[x].close;
       let high = readings1[x].high;
       let low = readings1[x].low;
@@ -238,8 +239,25 @@ axios.get('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&li
   })
   .then(function() {
     // always executed
-
   });
+}
+
+// Unix Time Converter 
+function convertTimestamp(timestamp) {
+  var d = new Date(timestamp * 1000), // Convert the passed timestamp to milliseconds
+    yyyy = d.getFullYear(),
+    mm = ('0' + (d.getMonth() + 1)).slice(-2), // Months are zero based. Add leading 0.
+    dd = ('0' + d.getDate()).slice(-2), // Add leading 0.
+    hh = d.getHours(),
+    h = hh,
+    min = ('0' + d.getMinutes()).slice(-2), // Add leading 0.
+    ampm = 'AM',
+
+    // ie: 2013-02-18, 8:35 AM	
+    // time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm
+    time = h + ':' + min
+  return time;
+}
 
 
 //Any Coin (Testing)
@@ -306,58 +324,98 @@ $(function() {
     updateCurrency(tsym)
     $(".popcoins > tr").remove()
   })
-  
-    $("td > img").on("click", function() {
 
-// this.id will give you the ID of that image.
-alert(this.id);
+  $('select.choosecoin').change(function() {
+    let fsym = $(this).children("option:selected").val();
+    alert("You have selected the coin - " + fsym);
+    updateCoin(fsym)
+    $('#coinselected').html(`Hourly Price of ${fsym}`)
+  })
 
-});
-  
-  //display graphs onclick
-  // $('td').on('click', function() {
-  //   alert($(this).attr('id'))
-  //   let graphname = ($(this)[0].innerText);
-  //   let fsym = $(this).attr('id');
 
-  //   $('#selectedcoin').html(`Hourly Price of ${graphname}`)
+  // Pagination
 
-  //   userinput(fsym)
+  //   $('.pagination').pagination({
+  //     dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+  //     locator: 'items',
+  //     totalNumberLocator: function(response) {
+  //         // you can return totalNumber by analyzing response content
+  //         return Math.floor(Math.random() * (1000 - 100)) + 100;
+  //     },
+  //     pageSize: 20,
+  //     ajax: {
+  //         beforeSend: function() {
+  //             dataContainer.html('Loading data from flickr.com ...');
+  //         }
+  //     },
+  //     callback: function(data, pagination) {
+  //         // template method of yourself
+  //         var html = template(data);
+  //         dataContainer.html(html);
+  //     }
   // })
-  
-    // Pagination
-  
-  $('.pagination').pagination({
-    dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
-    locator: 'items',
-    totalNumberLocator: function(response) {
-        // you can return totalNumber by analyzing response content
-        return Math.floor(Math.random() * (1000 - 100)) + 100;
-    },
-    pageSize: 20,
-    ajax: {
-        beforeSend: function() {
-            dataContainer.html('Loading data from flickr.com ...');
-        }
-    },
-    callback: function(data, pagination) {
-        // template method of yourself
-        var html = template(data);
-        dataContainer.html(html);
-    }
+
+
 })
 
-  
-})
+// second api
+function printdata1(arrayinfoBitcoin) {
+  var ndx = crossfilter(arrayinfoBitcoin);
+  var time_dim = ndx.dimension(dc.pluck('time'));
+  var open = time_dim.group().reduceSum(dc.pluck('open'));
+
+
+  dc.lineChart("#dataset2")
+    .width(1000)
+    .height(300)
+    .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+    .dimension(time_dim)
+    .group(open)
+    .transitionDuration(500)
+    .x(d3.scale.ordinal())
+    .xUnits(dc.units.ordinal)
+    .xAxisLabel("Hourly Prices")
+    .yAxis().ticks(5);
+
+
+  dc.renderAll();
+}
+//end of API call
+
+// ETH api
+function printdata2(arrayinfoETH) {
+  var ndx = crossfilter(arrayinfoETH);
+  var time_dim = ndx.dimension(dc.pluck('time'));
+  var open = time_dim.group().reduceSum(dc.pluck('open'));
+
+
+  dc.lineChart("#dataset3")
+    .width(1000)
+    .height(300)
+    .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+    .dimension(time_dim)
+    .group(open)
+    .transitionDuration(500)
+    .x(d3.scale.ordinal())
+    .xUnits(dc.units.ordinal)
+    .xAxisLabel("Hourly Prices")
+    .yAxis().ticks(5);
+
+
+  dc.renderAll();
+}
+//end of API call
+
+
 
 // Test for Composite Graphs
 axios.get('https://min-api.cryptocompare.com/data/histominute', {
     params: {
       api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
       limit: "10",
-      tsym: EOS,
+      tsym: 'EOS',
     }
-    
+
   })
   .then(function(response) {
     let compositereadings = response.data.Data
@@ -385,58 +443,59 @@ axios.get('https://min-api.cryptocompare.com/data/histominute', {
     // always executed
 
   });
-  
-    function drawCompositeGraphs(error, transactionsData) {
-        var ndx = crossfilter(transactionsData);
-        var parseDate = d3.time.format("%d/%m/%Y").parse;
 
-        transactionsData.forEach(function(d){
-            d.date = parseDate(d.date);
-        });
+function drawCompositeGraphs(error, transactionsData) {
+  var ndx = crossfilter(transactionsData);
+  var parseDate = d3.time.format("%d/%m/%Y").parse;
 
-        var date_dim = ndx.dimension(dc.pluck('date'));
+  transactionsData.forEach(function(d) {
+    d.date = parseDate(d.date);
+  });
 
-        var minDate = date_dim.bottom(1)[0].date;
-        var maxDate = date_dim.top(1)[0].date;
+  var date_dim = ndx.dimension(dc.pluck('date'));
 
-        function spend_by_name(name) {
-            return function(d) {
-                if (d.name === name) {
-                    return +d.spend;
-                } else {
-                    return 0;
-                }
-            }
-        }
+  var minDate = date_dim.bottom(1)[0].date;
+  var maxDate = date_dim.top(1)[0].date;
 
-        var tomSpendByMonth = date_dim.group().reduceSum(spend_by_name('Tom'));
-
-        var bobSpendByMonth = date_dim.group().reduceSum(spend_by_name('Bob'));
-        
-        var aliceSpendByMonth = date_dim.group().reduceSum(spend_by_name('Alice'));
-
-        var compositeChart = dc.compositeChart('#composite-chart');
-
-        compositeChart
-            .width(990)
-            .height(200)
-            .dimension(date_dim)
-            .x(d3.time.scale().domain([minDate, maxDate]))
-            .yAxisLabel("Spend")
-            .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
-            .renderHorizontalGridLines(true)
-            .compose([
-                dc.lineChart(compositeChart)
-                    .colors('green')
-                    .group(tomSpendByMonth, 'Tom'),
-                dc.lineChart(compositeChart)
-                    .colors('red')
-                    .group(bobSpendByMonth, 'Bob'),
-                dc.lineChart(compositeChart)
-                    .colors('blue')
-                    .group(aliceSpendByMonth, 'Alice')
-            ])
-            .brushOn(false)
-            .render();
-        dc.renderAll();
+  function spend_by_name(name) {
+    return function(d) {
+      if (d.name === name) {
+        return +d.spend;
+      }
+      else {
+        return 0;
+      }
     }
+  }
+
+  var tomSpendByMonth = date_dim.group().reduceSum(spend_by_name('Tom'));
+
+  var bobSpendByMonth = date_dim.group().reduceSum(spend_by_name('Bob'));
+
+  var aliceSpendByMonth = date_dim.group().reduceSum(spend_by_name('Alice'));
+
+  var compositeChart = dc.compositeChart('#composite-chart');
+
+  compositeChart
+    .width(990)
+    .height(200)
+    .dimension(date_dim)
+    .x(d3.time.scale().domain([minDate, maxDate]))
+    .yAxisLabel("Spend")
+    .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
+    .renderHorizontalGridLines(true)
+    .compose([
+      dc.lineChart(compositeChart)
+      .colors('green')
+      .group(tomSpendByMonth, 'Tom'),
+      dc.lineChart(compositeChart)
+      .colors('red')
+      .group(bobSpendByMonth, 'Bob'),
+      dc.lineChart(compositeChart)
+      .colors('blue')
+      .group(aliceSpendByMonth, 'Alice')
+    ])
+    .brushOn(false)
+    .render();
+  dc.renderAll();
+}
