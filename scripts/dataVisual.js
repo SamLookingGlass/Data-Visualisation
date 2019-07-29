@@ -46,7 +46,12 @@ $(function() {
 
 }); //End of Get Ready Function
 
-
+if ("1" === "1") {
+  let tsym = "GBP";
+  let fsym = "BTC";
+  updateCurrency(tsym);
+  updateCoin(fsym);
+}
 
 // Data Gathering from CryptoCompare
 /*TopList*/
@@ -291,7 +296,30 @@ function printdata1(arrayinfoBitcoin) {
   var ndx = crossfilter(arrayinfoBitcoin);
   var time_dim = ndx.dimension(dc.pluck('time'));
   var open = time_dim.group().reduceSum(dc.pluck('open'));
+  
+  // var zoom = d3.zoom()
+  //     .scaleExtent([0.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+  //     .extent([[0, 0], [width, height]])
+  //     .on("zoom", updateChart);
+      
+  //   // A function that updates the chart when the user zoom and thus new boundaries are available
+  // function updateChart() {
 
+  //   // recover the new scale
+  //   var newX = d3.event.transform.rescaleX(x);
+  //   var newY = d3.event.transform.rescaleY(y);
+
+  //   // update axes with these new boundaries
+  //   xAxis.call(d3.axisBottom(newX))
+  //   yAxis.call(d3.axisLeft(newY))
+
+  //   // update circle position
+  //   scatter
+  //     .selectAll("circle")
+  //     .attr('cx', function(d) {return newX(d.Sepal_Length)})
+  //     .attr('cy', function(d) {return newY(d.Petal_Length)});
+  // }    
+      
   //single graph
   dc.lineChart("#dataset2")
     .width(1000)
@@ -406,7 +434,20 @@ function updateId(coinId) {
         projectinfo.push(project_stats)
       }
       
+      let mediainfo = []
+      media_stats = {reddit_subscribers, reddit_link,  facebook_likes, facebook_link, twitter_follwers, twitter_link}
+      mediainfo.push(media_stats);
       console.log(reddit, facebook, twitter, projectinfo)
+      console.log(media_stats)
+      socialgraph(media_stats)
+      
+      
+        function socialgraph(media_stats) {
+
+            
+            dc.renderAll();
+        }
+    
     })
     .catch(function(error) {
       console.log(error);
@@ -416,3 +457,49 @@ function updateId(coinId) {
     });
 
 }
+
+var dataset = {
+  medima_fields: [
+      {key: 'dxid', value: 6}, 
+      {key: 'hic', value: 2}, 
+      {key: 'etc', value: 4},
+      ],
+};
+    
+var width = 460,
+    height = 300,
+    radius = Math.min(width, height) / 2;
+
+var donut = d3.select("#donutgraph")
+    .attr("class", "medima-donut-chart")
+    .attr("style", "width:" + width + "px;");
+    
+var pie = d3.layout.pie()
+    .value(function (d) {return d.value;})
+    .sort(null);
+
+var arc = d3.svg.arc()
+    .innerRadius(radius - 75)
+    .outerRadius(radius - 50);
+
+var svg = donut.append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var path = svg.selectAll("path")
+    .data(pie(dataset.medima_fields))
+    .enter().append("path")
+    .attr("d", arc)
+    .data(dataset.medima_fields)
+    .attr("class", function(d) { return d.key; });
+    
+var total = 0
+    for (var i = 0; i < dataset.medima_fields.length; i++ ){
+    total+=dataset.medima_fields[i].value
+}
+   
+var donutTotal = donut.append("div")    
+    .attr("class", "medima-donut-total")
+    .html(total + "<div class='medima-donut-total-subtext'>OVERLAPS</div>");

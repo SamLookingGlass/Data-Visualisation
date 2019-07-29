@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
   <!--Bootstrap CSS-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" type="text/css" />
   <!--Own Stylesheet-->
   <link href="../main/style.css" rel="stylesheet" type="text/css" />
 
@@ -33,6 +33,8 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.js"></script>
+  <script type="text/javascript" src="https://d3js.org/d3-drag.v1.min.js"></script>
+  <script type="text/javascript" src="https://d3js.org/d3-zoom.v1.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css" />
 
   <!--PaginationJS Framework-->
@@ -167,17 +169,6 @@
         </div>
         <table class="table table-hover">
           <tbody class="popcoins lead mb-0 text-muted">
-            <tr class="data-row">
-              <td colspan="2">
-                <div class="text-center">
-                  Waiting for input. Click on a currency.
-                  <br>
-                  <br>
-                  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
         <hr>
@@ -206,26 +197,93 @@
         </div>
       </div>
 
-      <div class="row containter-fluid">
-        <div class="col-lg-12 bg-white p-5 rounded my-5 shadow-sm">
-          <hr>
-          <div class="row"><label>Coin Selector</label></div>
-          <div class="row"><input type="text" id="coin" name="coin" /></div>
-          <div class="row"><button id="submit" name="submit" tyoe="button" onClick="getData()">Click</button></div>
-          <!--Triggered after Currency is selected-->
-          <div style="font-weight:bold" id="dataset">
-            <h1>Price of Coins</h1>
+      <div class="containter-fluid">
+        <div class="row bg-white p-5 rounded my-5 shadow-sm">
+          <h1>Social Media Data</h1>
+
+                        
+          <div class="row" id="donutgraph"></div>
+
+          <div class="col-lg-3 font1">
+            <div class="medima-field">Followers</div>
+            <div class="medima-field">Link</div>
+            <div class="medima-field">Comments/Day</div>
+            <div class="medima-field">Comments/Hour</div>
+            <div class="medima-field">Number of Projects</div>
           </div>
 
-          <div style="font-weight:bold" id="dataset1">
-            <h1>Coin Information</h1>
+          <div class="col-lg-2 font1 m-0.5">
+            <div class="medima-med-name">
+              <img class="social-media-icons" style="height:40px; width:50px; position:relative; top:1px" src="https://pngimg.com/uploads/facebook_logos/facebook_logos_PNG19751.png" alt="Facebook"/>
+            </div>
+            <br>
+            <div class="medima-field">Likes</div>
+            <div class="medima-field">Link</div>
+            <div class="medima-field"></div>
+            <div class="medima-field"></div>
+            <div class="medima-field"></div>
           </div>
 
-        </div>
+
+          <div class="col-lg-2 font1 m-0.5">
+            <div class="medima-med-name">
+              <img class="social-media-icons" style="height:50px; width:50px; position:relative; top:-4px" src="https://pngimg.com/uploads/twitter/twitter_PNG28.png" alt="Twitter"/>
+            </div>
+            <br>
+            <div class="medima-field">Followers</div>
+            <div class="medima-field">Link</div>
+            <div class="medima-field"></div>
+            <div class="medima-field"></div>
+            <div class="medima-field"></div>
+          </div>
+
+          <div class="col-lg-2 font1 m-0.5">
+            <div class="medima-med-name">
+              <img class="social-media-icons" style="height:40px; width:40px" src="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?width=720&auto=webp&s=be9d031a2551b47bcd40ec45feec636d42a32127" alt="Reddit"/>
+            </div>
+            <br>
+            <div class="medima-field">Subscribers</div>
+            <div class="medima-field">Link</div>
+            <div class="medima-field">Comments/Day</div>
+            <div class="medima-field">Comments/Hour</div>
+            <div class="medima-field"></div>
+          </div>
+
+          <div class="col-lg-2 font1 m-0.5">
+            <div class="medima-med-name">
+              <img class="social-media-icons" style="height:42px; width:42px; position:relative; top:-2px" src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png" alt="Github"/>
+            </div>
+            <br>
+            <div class="medima-field">Forks</div>
+            <div class="medima-field">Link</div>
+            <div class="medima-field"></div>
+            <div class="medima-field"></div>
+            <div class="medima-field">Number of Projects</div>
+          </div>
+
       </div>
-
-
     </div>
+
+    <div class="row containter-fluid">
+      <div class="col-lg-12 bg-white p-5 rounded my-5 shadow-sm">
+        <hr>
+        <div class="row"><label>Coin Selector</label></div>
+        <div class="row"><input type="text" id="coin" name="coin" /></div>
+        <div class="row"><button id="submit" name="submit" tyoe="button" onClick="getData()">Click</button></div>
+        <!--Triggered after Currency is selected-->
+        <div style="font-weight:bold" id="dataset">
+          <h1>Price of Coins</h1>
+        </div>
+
+        <div style="font-weight:bold" id="dataset1">
+          <h1>Coin Information</h1>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
   </div>
 
 

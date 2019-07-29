@@ -116,3 +116,45 @@ body .col-lg-3.bg-white.p-5.rounded.my-5.shadow-sm {
   border-radius: 5pt;
  
 }
+
+/*Pen*/
+#socialstats {
+    font-family:'Lato', sans-serif;
+    color: rgb(100, 100, 100)
+}
+
+.font1 {
+    font-weight: bold;
+    font-style: normal;
+    border-right: dotted 2px lightgrey;
+}
+
+.medima-med-name {
+    font-size: 17px;
+    height: 40px;
+    text-align: center;
+    font-weight: normal;
+    border-right: solid 2px white;
+    margin-right: -2px;
+}
+
+#medima-donut {
+  float:left;
+  width: 350px;
+}
+
+.medima-donut-chart {
+  position: relative;
+}
+
+.medima-donut-total {
+  position: absolute;
+  left: 192px;
+  font-size: 60px;
+  top: 100px;
+}
+.medima-donut-total-subtext {
+  font-size:12px;
+  left:8px;
+  position:relative;
+}
