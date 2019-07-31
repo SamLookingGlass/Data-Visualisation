@@ -6,46 +6,61 @@ $(function() {
   });
 
   // Toplist toggle
-  $('#btn1').on('click', function() {
+  $('#toplistCollapse').on('click', function() {
     $('#toplist').toggle();
+  });
+  
+  // Hour Prices toggle
+  $('#hrpricesCollapse').on('click', function() {
+    $('#hrprices').toggle();
+  });
 
-  })
-
-  // Currency Conversion
+  // Social Media Data toggle
+  $('#socialmediaCollapse').on('click', function() {
+    $('#socialmedia').toggle();
+  });
+    
+  // Coin Prices Chart toggle
+  $('#coinpricesCollapse').on('click', function() {
+    $('#coinprices').toggle();
+  });
+  
+  // Currency Selector
   $('.currency').click(function() {
     // alert($(this).attr('id'))
     let tsym = $(this).attr('id');
-    updateCurrency(tsym)
-    $(".popcoins > tr").remove()
-  })
+    updateCurrency(tsym);
+    $(".popcoins > tr").remove();
+  });
 
   $('select.choosecurrency').change(function() {
     let tsym = $(this).children("option:selected").val();
     // alert("You have selected the currency - " + tsym);
-    updateCurrency(tsym)
-    $(".popcoins > tr").remove()
-  })
+    updateCurrency(tsym);
+    $(".popcoins > tr").remove();
+  });
 
   // Coin selector
   $('select.choosecoin').change(function() {
     let fsym = $(this).children("option:selected").val();
     // alert("You have selected the coin - " + fsym);
-    updateCoin(fsym)
-    $('#coinselected').html(`Hourly Price of ${fsym}`)
-  })
+    updateCoin(fsym);
+    $('#coinselected').html(`Hourly Price of ${fsym}`);
+  });
 
   // IMG selector
   $("tbody").on("click", "tr", function() {
     let fsym = $(this).attr('value');
     let coinId = $(this).attr('id');
-    alert("You have selected " + fsym + coinId)
-    updateCoin(fsym)
-    updateId(coinId)
-    $('#coinselected').html(`Hourly Price of ${fsym}`)
-  })
-
+    alert("You have selected " + fsym + coinId);
+    updateCoin(fsym);
+    updateId(coinId);
+    $('#coinselected').html(`Hourly Price of ${fsym}`);
+  });
 }); //End of Get Ready Function
 
+
+// Default Settings (Currency and Coin)
 if ("1" === "1") {
   let tsym = "GBP";
   let fsym = "BTC";
@@ -53,7 +68,6 @@ if ("1" === "1") {
   updateCoin(fsym);
 }
 
-// Data Gathering from CryptoCompare
 /*TopList*/
 function updateCurrency(tsym) {
   axios.get("https://min-api.cryptocompare.com/data/top/totalvolfull", {
@@ -66,10 +80,10 @@ function updateCurrency(tsym) {
     })
     .then(function(response) {
       console.log(tsym);
-      let readings = response.data.Data
+      let readings = response.data.Data;
       let arrayinfocoin = [];
       for (x in readings) {
-        console.log(readings[x])
+        console.log(readings[x]);
         let name = readings[x].CoinInfo.FullName;
         let abbrv = readings[x].CoinInfo.Name;
         let image = readings[x].CoinInfo.ImageUrl;
@@ -84,13 +98,13 @@ function updateCurrency(tsym) {
 
 
         if (stringprice.includes('$')) {
-          price = stringprice.replace('$', '').replace(',', '')
+          price = stringprice.replace('$', '').replace(',', '');
         }
         else if (stringprice.includes('£')) {
-          price = stringprice.replace('£', '').replace(',', '')
+          price = stringprice.replace('£', '').replace(',', '');
         }
         else {
-          price = stringprice.replace('SGD', '').replace(',', '')
+          price = stringprice.replace('SGD', '').replace(',', '');
         }
 
         let infocoin = { name, abbrv, price, marketcap, image, stringprice, pertchange, supply, marketinfo, high24, low24, coinid };
@@ -98,7 +112,7 @@ function updateCurrency(tsym) {
         arrayinfocoin.push(infocoin);
 
       }
-      console.log(arrayinfocoin);
+      // console.log(arrayinfocoin);
       //   console.log(readings);
       printdata(arrayinfocoin);
     })
@@ -124,14 +138,14 @@ function printdata(arrayinfocoin) {
                               <td> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
                                 <h5>${c.name}</h5>
                               </td>
-                              <td><strong>Price: <br/>${c.stringprice}</strong></td>
-                              <td><strong>24H High: <br/>${c.high24}</strong></td>
-                              <td><strong>24H Low: <br/>${c.low24}</strong></td>
-                              <td><strong>24H Chg%: <br/><span class="poschange">${c.pertchange}</span></strong></td>
-                              <td><strong>Market Cap: <br/>${c.marketcap}</strong></td>
-                              <td><strong>Info from: <br/>${c.marketinfo}</strong></td>
+                              <td><strong>${c.stringprice}</strong></td>
+                              <td><strong>${c.high24}</strong></td>
+                              <td><strong>${c.low24}</strong></td>
+                              <td><strong><span class="poschange">${c.pertchange}</span></strong></td>
+                              <td><strong>${c.marketcap}</strong></td>
+                              <td><strong>${c.marketinfo}</strong></td>
                             </tr>
-                      `)
+                      `);
     }
 
     else if (c.pertchange < 0) {
@@ -140,14 +154,14 @@ function printdata(arrayinfocoin) {
                               <td> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
                                 <h5>${c.name}</h5>
                               </td>
-                              <td><strong>Price: <br/>${c.stringprice}</strong></td>
-                              <td><strong>24H High: <br/>${c.high24}</strong></td>
-                              <td><strong>24H Low: <br/>${c.low24}</strong></td>
-                              <td><strong>24H Chg%: <br/><span class="negchange">${c.pertchange}</span></strong></td>
-                              <td><strong>Market Cap: <br/>${c.marketcap}</strong></td>
-                              <td><strong>Info from: <br/>${c.marketinfo}</strong></td>
+                              <td><strong>${c.stringprice}</strong></td>
+                              <td><strong>${c.high24}</strong></td>
+                              <td><strong>${c.low24}</strong></td>
+                              <td><strong><span class="negchange">${c.pertchange}</span></strong></td>
+                              <td><strong>${c.marketcap}</strong></td>
+                              <td><strong>${c.marketinfo}</strong></td>
                             </tr>
-                      `)
+                      `);
     }
 
     else {
@@ -156,17 +170,17 @@ function printdata(arrayinfocoin) {
                               <td> <img src="https://www.cryptocompare.com${c.image}" alt="..." width="30"></img>
                                 <h5>${c.name}</h5>
                               </td>
-                              <td><strong>Price: <br/>${c.stringprice}</strong></td>
-                              <td><strong>24H High: <br/>${c.high24}</strong></td>
-                              <td><strong>24H Low: <br/>${c.low24}</strong></td>
-                              <td><strong>24H Chg%: <br/><span class="nochange">${c.pertchange}</span></strong></td>
-                              <td><strong>Market Cap: <br/>${c.marketcap}</strong></td>
-                              <td><strong>Info from: <br/>${c.marketinfo}</strong></td>
+                              <td><strong>${c.stringprice}</strong></td>
+                              <td><strong>${c.high24}</strong></td>
+                              <td><strong>${c.low24}</strong></td>
+                              <td><strong><span class="nochange">${c.pertchange}</span></strong></td>
+                              <td><strong>${c.marketcap}</strong></td>
+                              <td><strong>${c.marketinfo}</strong></td>
                             </tr>
-                      `)
+                      `);
     }
 
-  };
+  }
 
 
   dc.barChart('#dataset')
@@ -216,13 +230,13 @@ function updateCoin(fsym) {
       }
     })
     .then(function(response) {
-      let readings1 = response.data.Data
+      let readings1 = response.data.Data;
       let arrayinfoBitcoin = [];
 
       for (x in readings1) {
         //   console.log(readings1[x])
         let time_raw = readings1[x].time;
-        let time = convertTimestamp(time_raw)
+        let time = convertTimestamp(time_raw);
         let close = readings1[x].close;
         let high = readings1[x].high;
         let low = readings1[x].low;
@@ -296,32 +310,10 @@ function printdata1(arrayinfoBitcoin) {
   var ndx = crossfilter(arrayinfoBitcoin);
   var time_dim = ndx.dimension(dc.pluck('time'));
   var open = time_dim.group().reduceSum(dc.pluck('open'));
-  
-  // var zoom = d3.zoom()
-  //     .scaleExtent([0.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
-  //     .extent([[0, 0], [width, height]])
-  //     .on("zoom", updateChart);
-      
-  //   // A function that updates the chart when the user zoom and thus new boundaries are available
-  // function updateChart() {
 
-  //   // recover the new scale
-  //   var newX = d3.event.transform.rescaleX(x);
-  //   var newY = d3.event.transform.rescaleY(y);
-
-  //   // update axes with these new boundaries
-  //   xAxis.call(d3.axisBottom(newX))
-  //   yAxis.call(d3.axisLeft(newY))
-
-  //   // update circle position
-  //   scatter
-  //     .selectAll("circle")
-  //     .attr('cx', function(d) {return newX(d.Sepal_Length)})
-  //     .attr('cy', function(d) {return newY(d.Petal_Length)});
-  // }    
       
   //single graph
-  dc.lineChart("#dataset2")
+  dc.lineChart("#hourlyprice")
     .width(1000)
     .height(300)
     .margins({ top: 10, right: 50, bottom: 30, left: 50 })
@@ -332,53 +324,6 @@ function printdata1(arrayinfoBitcoin) {
     .xUnits(dc.units.ordinal)
     .xAxisLabel("Hourly Prices")
     .yAxis().ticks(5);
-
-  // //composite graph
-  // var ndx = crossfilter(arrayinfoBitcoin);
-  // var time_dim = ndx.dimension(dc.pluck('time'));
-  // var open = time_dim.group().reduceSum(dc.pluck('open'));
-
-  // function spend_by_name(name) {
-  //   return function(d) {
-  //     if (d.name === name) {
-  //       return +d.spend;
-  //     }
-  //     else {
-  //       return 0;
-  //     }
-  //   }
-  // }
-
-  // var coin1 = time_dim.group().reduceSum(spend_by_name('Tom'));
-
-  // var coin2 = time_dim.group().reduceSum(spend_by_name('Bob'));
-
-  // var coin3 = time_dim.group().reduceSum(spend_by_name('Alice'));
-
-  // var compositeChart = dc.compositeChart('#composite-chart');
-
-  // compositeChart
-  //   .width(990)
-  //   .height(200)
-  //   .dimension(date_dim)
-  //   .x(d3.time.scale().domain([minDate, maxDate]))
-  //   .yAxisLabel("Spend")
-  //   .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
-  //   .renderHorizontalGridLines(true)
-  //   .compose([
-  //     dc.lineChart(compositeChart)
-  //     .colors('green')
-  //     .group(tomSpendByMonth, 'Tom'),
-  //     dc.lineChart(compositeChart)
-  //     .colors('red')
-  //     .group(bobSpendByMonth, 'Bob'),
-  //     dc.lineChart(compositeChart)
-  //     .colors('blue')
-  //     .group(aliceSpendByMonth, 'Alice')
-  //   ])
-  //   .brushOn(false)
-  //   .render();
-
 
   dc.renderAll();
 }
@@ -458,48 +403,48 @@ function updateId(coinId) {
 
 }
 
-var dataset = {
-  medima_fields: [
-      {key: 'dxid', value: 6}, 
-      {key: 'hic', value: 2}, 
-      {key: 'etc', value: 4},
-      ],
-};
+// var dataset = {
+//   medima_fields: [
+//       {key: 'dxid', value: 6}, 
+//       {key: 'hic', value: 2}, 
+//       {key: 'etc', value: 4},
+//       ],
+// };
     
-var width = 460,
-    height = 300,
-    radius = Math.min(width, height) / 2;
+// var width = 460,
+//     height = 300,
+//     radius = Math.min(width, height) / 2;
 
-var donut = d3.select("#donutgraph")
-    .attr("class", "medima-donut-chart")
-    .attr("style", "width:" + width + "px;");
+// var donut = d3.select("#donutgraph")
+//     .attr("class", "medima-donut-chart")
+//     .attr("style", "width:" + width + "px;");
     
-var pie = d3.layout.pie()
-    .value(function (d) {return d.value;})
-    .sort(null);
+// var pie = d3.layout.pie()
+//     .value(function (d) {return d.value;})
+//     .sort(null);
 
-var arc = d3.svg.arc()
-    .innerRadius(radius - 75)
-    .outerRadius(radius - 50);
+// var arc = d3.svg.arc()
+//     .innerRadius(radius - 75)
+//     .outerRadius(radius - 50);
 
-var svg = donut.append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+// var svg = donut.append("svg")
+//     .attr("width", width)
+//     .attr("height", height)
+//     .append("g")
+//     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var path = svg.selectAll("path")
-    .data(pie(dataset.medima_fields))
-    .enter().append("path")
-    .attr("d", arc)
-    .data(dataset.medima_fields)
-    .attr("class", function(d) { return d.key; });
+// var path = svg.selectAll("path")
+//     .data(pie(dataset.medima_fields))
+//     .enter().append("path")
+//     .attr("d", arc)
+//     .data(dataset.medima_fields)
+//     .attr("class", function(d) { return d.key; });
     
-var total = 0
-    for (var i = 0; i < dataset.medima_fields.length; i++ ){
-    total+=dataset.medima_fields[i].value
-}
+// var total = 0
+//     for (var i = 0; i < dataset.medima_fields.length; i++ ){
+//     total+=dataset.medima_fields[i].value
+// }
    
-var donutTotal = donut.append("div")    
-    .attr("class", "medima-donut-total")
-    .html(total + "<div class='medima-donut-total-subtext'>OVERLAPS</div>");
+// var donutTotal = donut.append("div")    
+//     .attr("class", "medima-donut-total")
+//     .html(total + "<div class='medima-donut-total-subtext'>OVERLAPS</div>");
