@@ -110,8 +110,7 @@
       <button id="socialmediaCollapse" type="button" class="btn btn-secondary rounded-pill shadow-sm px-4 mb-4"><small class="text-uppercase font-weight-bold">Social Media Data</small></button>
       <button id="coinpricesCollapse" type="button" class="btn btn-secondary rounded-pill shadow-sm px-4 mb-4"><small class="text-uppercase font-weight-bold">Coin Price Chart</small></button>
     </div>
-    <!-- Side Content -->
-    <!--<div class="separator"></div>-->
+
     <div class="row containter-fluid">
       <div id="toplist" class="col-lg-12 bg-white p-5 rounded my-5 shadow-sm">
         <h2>Toplist of Coins by 24H Volume</h2>
@@ -185,9 +184,7 @@
           </tbody>
         </table>
         <hr>
-        <div class="pagination">
-
-        </div>
+        <div class="pagination"></div>
       </div>
 
       <div class="row containter-fluid">
@@ -209,73 +206,46 @@
 
         </div>
       </div>
+      
+      <div class="row containter-fluid">
+        <div class="col-lg-12 bg-white p-5 rounded my-5 shadow-sm">
+                <h1>Price of Coin Selected (Minutes)</h1>
+                <svg id=id="mingraph"></svg>
+        </div>
+      </div>
 
-      <!--<div class="containter-fluid">-->
-      <!--  <div class="row bg-white p-5 rounded my-5 shadow-sm" id="socialmedia">-->
-      <!--    <h1>Social Media Data</h1>-->
-
-
-      <!--    <div class="row" id="donutgraph"></div>-->
-
-      <!--    <div class="col-lg-4 font1">-->
-      <!--      <div class="medima-field">Followers</div>-->
-      <!--      <div class="medima-field">Link</div>-->
-      <!--      <div class="medima-field">Comments/Day</div>-->
-      <!--      <div class="medima-field">Comments/Hour</div>-->
-      <!--      <div class="medima-field">Number of Projects</div>-->
-      <!--    </div>-->
-
-      <!--    <div class="col-lg-2 font1 m-0.5">-->
-      <!--      <div class="medima-med-name">-->
-      <!--        <img class="social-media-icons" style="height:40px; width:50px; position:relative; top:1px" src="https://pngimg.com/uploads/facebook_logos/facebook_logos_PNG19751.png" alt="Facebook" />-->
-      <!--      </div>-->
-      <!--      <br>-->
-      <!--      <div class="medima-field">Likes</div>-->
-      <!--      <div class="medima-field">Link</div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--    </div>-->
+      <div class="containter-fluid">
+        <div class="row bg-white p-5 rounded my-5 shadow-sm">
+          <h1>Social Media Data</h1>
 
 
-      <!--    <div class="col-lg-2 font1 m-0.5">-->
-      <!--      <div class="medima-med-name">-->
-      <!--        <img class="social-media-icons" style="height:50px; width:50px; position:relative; top:-4px" src="https://pngimg.com/uploads/twitter/twitter_PNG28.png" alt="Twitter" />-->
-      <!--      </div>-->
-      <!--      <br>-->
-      <!--      <div class="medima-field">Followers</div>-->
-      <!--      <div class="medima-field">Link</div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--    </div>-->
+          <div class="row" id="donutgraph"></div>
 
-      <!--    <div class="col-lg-2 font1 m-0.5">-->
-      <!--      <div class="medima-med-name">-->
-      <!--        <img class="social-media-icons" style="height:40px; width:40px" src="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?width=720&auto=webp&s=be9d031a2551b47bcd40ec45feec636d42a32127" alt="Reddit" />-->
-      <!--      </div>-->
-      <!--      <br>-->
-      <!--      <div class="medima-field">Subscribers</div>-->
-      <!--      <div class="medima-field">Link</div>-->
-      <!--      <div class="medima-field">Comments/Day</div>-->
-      <!--      <div class="medima-field">Comments/Hour</div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--    </div>-->
+          <table class="table table-hover">
+            <tbody class="lead mb-0 text-muted">
+              <th>Facebook<br/><img class="social-media-icons" style="height:40px; width:50px; position:relative; top:1px" src="https://pngimg.com/uploads/facebook_logos/facebook_logos_PNG19751.png" alt="Facebook" /></th>
+              <th>Twitter<br/><img class="social-media-icons" style="height:50px; width:50px; position:relative; top:-4px" src="https://pngimg.com/uploads/twitter/twitter_PNG28.png" alt="Twitter" /></th>
+              <th>Reddit<br/><img class="social-media-icons" style="height:40px; width:40px" src="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?width=720&auto=webp&s=be9d031a2551b47bcd40ec45feec636d42a32127" alt="Reddit"
+                /></th>
+            </tbody>
 
-      <!--    <div class="col-lg-2 font1 m-0.5">-->
-      <!--      <div class="medima-med-name">-->
-      <!--        <img class="social-media-icons" style="height:42px; width:42px; position:relative; top:-2px" src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png" alt="Github" />-->
-      <!--      </div>-->
-      <!--      <br>-->
-      <!--      <div class="medima-field">Forks</div>-->
-      <!--      <div class="medima-field">Link</div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--      <div class="medima-field"></div>-->
-      <!--      <div class="medima-field">Number of Projects</div>-->
-      <!--    </div>-->
+                      
+            <tbody class="socialstats lead mb-0 text-muted">
+            </tbody>
+            
+            <tbody class="lead mb-0 text-muted">
+                <th>Github<br/><img class="social-media-icons" style="height:42px; width:42px; position:relative; top:-2px" src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png" alt="Github" /></th>
+            </tbody>
+            
+            <tbody class="socialstats_github lead mb-0 text-muted">
+            </tbody>
+          
+                      
+          </table>
+        </div>
+      </div>
 
-      <!--  </div>-->
-      <!--</div>-->
+
 
       <div class="row containter-fluid">
         <div class="col-lg-12 bg-white p-5 rounded my-5 shadow-sm" id="coinprices">
@@ -288,7 +258,6 @@
           </div>
         </div>
       </div>
-
 
     </div>
   </div>

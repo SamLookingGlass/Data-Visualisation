@@ -1,5 +1,17 @@
+// Default Settings (Currency and Coin)
+if ("1" === "1") {
+  let tsym = "GBP";
+  let fsym = "BTC";
+  let coinId = "1182"
+  updateCurrency(tsym);
+  updateCoin(fsym);
+  min_api_data(fsym);
+  social_api_data(coinId)
+}
+
 /*Get Ready Function*/
 $(function() {
+  // Selectors
   // Sidebar toggle behavior
   $('#sidebarCollapse').on('click', function() {
     $('#sidebar, #content').toggleClass('active');
@@ -52,21 +64,55 @@ $(function() {
   $("tbody").on("click", "tr", function() {
     let fsym = $(this).attr('value');
     let coinId = $(this).attr('id');
-    alert("You have selected " + fsym + coinId);
+    // alert("You have selected " + fsym + coinId);
     updateCoin(fsym);
-    updateId(coinId);
-    $('#coinselected').html(`Hourly Price of ${fsym}`);
+    social_api_data(coinId);
+    $('#coinselected').html(`Hourly Price of ${fsym}`)
+    $('#coinselected1').html(`Social Media Data of Coin Selected ${fsym}`)
+    $(".socialstats > tr").remove()
+    $(".socialstats_github > tr").remove();
   });
 }); //End of Get Ready Function
 
 
-// Default Settings (Currency and Coin)
-if ("1" === "1") {
-  let tsym = "GBP";
-  let fsym = "BTC";
-  updateCurrency(tsym);
-  updateCoin(fsym);
+/*Historical By Minutes API Call*/
+function min_api_data(fsym) {
+axios.get("https://min-api.cryptocompare.com/data/histominute", {
+    params: {
+        api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
+        limit: "10",
+        fsym: fsym,
+        tsym: "GBP",
+    }
+  })
+  .then(function (response) {
+    let testreadings = response.data.Data
+    let min_data = []
+    for (x in testreadings) {
+      let open = testreadings[x].open;
+      let high = testreadings[x].high;
+      let low = testreadings[x].low;
+      let time_raw = testreadings[x].time;
+      let time = convertTimestamp(time_raw);
+      let min_data_array = {open, high, low, time}
+      min_data.push(min_data_array)
+    }
+    // console.log(min_data);
+    draw_min_data(min_data);
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });  
 }
+// End of API Call
+
+/*Draw Line Graph for Historical By Minutes*/
+function draw_min_data(min_data) {
+}
+
 
 /*TopList*/
 function updateCurrency(tsym) {
@@ -79,11 +125,11 @@ function updateCurrency(tsym) {
       }
     })
     .then(function(response) {
-      console.log(tsym);
+      // console.log(tsym);
       let readings = response.data.Data;
       let arrayinfocoin = [];
       for (x in readings) {
-        console.log(readings[x]);
+        // console.log(readings[x]);
         let name = readings[x].CoinInfo.FullName;
         let abbrv = readings[x].CoinInfo.Name;
         let image = readings[x].CoinInfo.ImageUrl;
@@ -329,9 +375,9 @@ function printdata1(arrayinfoBitcoin) {
 }
 //End of Function
 
-//Social Media Data
+//Social Media Data API call
 
-function updateId(coinId) {
+function social_api_data(coinId) {
   axios.get('https://min-api.cryptocompare.com/data/social/coin/latest', {
       params: {
         api_key: "2ccfbedbc83b1a45687c4e6eeaa6ab79299b4ade9398cee3878b6a42c1066f73",
@@ -346,7 +392,7 @@ function updateId(coinId) {
       let codeRepositorystats = socialData.CodeRepository.List;
       let facebookstats = socialData.Facebook;
       
-      console.log(socialData)
+      // console.log(socialData)
       
       let reddit_active_users = redditstats.active_users
       let reddit_coin_name = redditstats.name;
@@ -355,18 +401,17 @@ function updateId(coinId) {
       let reddit_comments_day = redditstats.comments_per_day;
       let reddit_comments_hour = redditstats.comments_per_hour;
       
-      let reddit =  [{ reddit_active_users, reddit_coin_name, reddit_subscribers, reddit_link, reddit_comments_day, reddit_comments_hour }];
       
       
       let facebook_likes = facebookstats.likes; 
       let facebook_link = facebookstats.link;
       
-      let facebook = [{facebook_link, facebook_likes}]
+
       
       let twitter_follwers = twitterstats.followers;
       let twitter_link = twitterstats.link;
       
-      let twitter = [{twitter_follwers, twitter_link}]
+
       
       let projectinfo = []
       for (x in codeRepositorystats) {
@@ -380,18 +425,13 @@ function updateId(coinId) {
       }
       
       let mediainfo = []
-      media_stats = {reddit_subscribers, reddit_link,  facebook_likes, facebook_link, twitter_follwers, twitter_link}
+      media_stats = {reddit_subscribers, reddit_link, reddit_comments_day, reddit_comments_hour, reddit_active_users,  facebook_likes, facebook_link, twitter_follwers, twitter_link, projectinfo}
       mediainfo.push(media_stats);
-      console.log(reddit, facebook, twitter, projectinfo)
-      console.log(media_stats)
+      // console.log(reddit, facebook, twitter, projectinfo)
+      // console.log(media_stats)
       socialgraph(media_stats)
       
-      
-        function socialgraph(media_stats) {
-
-            
-            dc.renderAll();
-        }
+    
     
     })
     .catch(function(error) {
@@ -401,50 +441,40 @@ function updateId(coinId) {
       // always executed
     });
 
-}
+} // End of API Call
 
-// var dataset = {
-//   medima_fields: [
-//       {key: 'dxid', value: 6}, 
-//       {key: 'hic', value: 2}, 
-//       {key: 'etc', value: 4},
-//       ],
-// };
-    
-// var width = 460,
-//     height = 300,
-//     radius = Math.min(width, height) / 2;
+/*Draw Social Media Data*/
+        function socialgraph(media_stats) {
+             console.log(media_stats)
+                 $(".socialstats").append(`
+                            <tr>
+                              <td><strong>Total Likes:</strong> <a target="_blank" href="${media_stats.facebook_link}">${media_stats.facebook_likes}<a/></td>
+                              <td><strong>Total Followers: </strong><a target="_blank" href="${media_stats.twitter_link}">${media_stats.twitter_follwers}<a/></td>
+                              <td>
+                                <ul>
+                                  <li><strong>Total Subscribers:</strong> <a target="_blank" href="${media_stats.reddit_link}">${media_stats.reddit_subscribers}</li><a
+                                  <li><strong>Active Users: </strong>${media_stats.reddit_active_users} </li>
+                                  <li><strong>Comments/Hr: </strong>${media_stats.reddit_comments_hour}</li>
+                                  <li><strong>Comments/Day: </strong>${media_stats.reddit_comments_day}</li>
+                                </ul>  
+                              </td>
+                            </tr>
+                      `)
+              
+              
+              for (let m of media_stats.projectinfo) {
 
-// var donut = d3.select("#donutgraph")
-//     .attr("class", "medima-donut-chart")
-//     .attr("style", "width:" + width + "px;");
-    
-// var pie = d3.layout.pie()
-//     .value(function (d) {return d.value;})
-//     .sort(null);
+          $(".socialstats_github").append(`
+                            <tr>
+                              <td><strong>Project Link: </strong><a href="${m.project_link}" target="_blank">${m.project_link}</a></td>
+                              <td><strong>Project Forks: </strong>${m.project_forks}</td>
+                              <td><strong>Last Commit: </strong>${m.project_last_push}</td>
+                              <td><strong>Last Update: </strong>${m.project_last_update}</td>
+                              <td><strong>Total Subscribers: </strong>${m.project_subscribers}</td>
+                            </tr>
+                      `)
+               }
+              }
 
-// var arc = d3.svg.arc()
-//     .innerRadius(radius - 75)
-//     .outerRadius(radius - 50);
 
-// var svg = donut.append("svg")
-//     .attr("width", width)
-//     .attr("height", height)
-//     .append("g")
-//     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-// var path = svg.selectAll("path")
-//     .data(pie(dataset.medima_fields))
-//     .enter().append("path")
-//     .attr("d", arc)
-//     .data(dataset.medima_fields)
-//     .attr("class", function(d) { return d.key; });
-    
-// var total = 0
-//     for (var i = 0; i < dataset.medima_fields.length; i++ ){
-//     total+=dataset.medima_fields[i].value
-// }
-   
-// var donutTotal = donut.append("div")    
-//     .attr("class", "medima-donut-total")
-//     .html(total + "<div class='medima-donut-total-subtext'>OVERLAPS</div>");
+                
